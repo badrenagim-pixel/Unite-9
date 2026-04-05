@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 9 Study App — Exponents & Scientific Notation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0d1117;
+  --surface: #161b22;
+  --card:    #1c2330;
+  --border:  #30363d;
+  --blue:    #3b82f6;
+  --blue-d:  #1d4ed8;
+  --green:   #22c55e;
+  --red:     #ef4444;
+  --yellow:  #f59e0b;
+  --purple:  #a78bfa;
+  --teal:    #2dd4bf;
+  --white:   #f0f6fc;
+  --muted:   #8b949e;
+  --text:    #e6edf3;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── HEADER ── */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;position:sticky;top:0;z-index:100;}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);letter-spacing:-.3px;}
+.logo span{color:var(--blue);}
+.nav-pills{display:flex;gap:4px;}
+.npill{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.npill:hover{color:var(--white);background:var(--card);}
+.npill.active{background:var(--blue);color:#fff;}
+.test-badge{background:#1a2d1a;border:1px solid #2d5a2d;color:var(--green);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;}
+
+/* ── PAGES ── */
+.page{display:none;max-width:1100px;margin:0 auto;padding:40px 32px;}
+.page.active{display:block;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#0d1b3e 0%,#1a2d5a 50%,#0d2040 100%);border:1px solid #1e3a6e;border-radius:20px;padding:56px 48px;margin-bottom:32px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(59,130,246,.15) 0%,transparent 70%);}
+.hero::after{content:'xⁿ';position:absolute;bottom:-20px;right:40px;font-family:'Syne',sans-serif;font-size:140px;font-weight:800;color:rgba(59,130,246,.06);line-height:1;}
+.hero-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--blue);margin-bottom:12px;}
+.hero-title{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--white);line-height:1.1;margin-bottom:12px;}
+.hero-title span{color:var(--blue);}
+.hero-sub{font-size:15px;color:#8ba3c4;max-width:520px;line-height:1.6;margin-bottom:28px;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px;}
+.chip{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid;}
+.chip-blue{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.3);color:#93c5fd;}
+.chip-green{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.25);color:#86efac;}
+.chip-yellow{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);color:#fcd34d;}
+.chip-purple{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.25);color:#c4b5fd;}
+.chip-teal{background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.25);color:#5eead4;}
+
+/* ── SECTION TITLES ── */
+.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--blue);margin-bottom:8px;}
+.sec-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--white);margin-bottom:6px;}
+.sec-sub{font-size:14px;color:var(--muted);margin-bottom:32px;}
+
+/* ── RULE CARDS ── */
+.rules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;}
+.rule-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;transition:all .2s;cursor:default;}
+.rule-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.rule-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.rule-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.rule-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.rule-formula{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--blue);margin-bottom:10px;letter-spacing:-.5px;}
+.rule-example{background:var(--bg);border-radius:8px;padding:12px;font-size:13px;color:var(--muted);}
+.rule-example strong{color:var(--teal);}
+.rule-tip{margin-top:10px;font-size:12px;color:var(--yellow);background:rgba(245,158,11,.07);border-radius:6px;padding:8px 10px;}
+
+/* ── SPECIAL RULES ── */
+.special-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;}
+.special-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;align-items:center;gap:20px;}
+.special-math{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;min-width:120px;text-align:center;}
+.special-info{}
+.special-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.special-desc{font-size:13px;color:var(--muted);line-height:1.5;}
+.special-ex{font-size:13px;color:var(--teal);margin-top:6px;}
+
+/* ── SCI NOTATION SECTION ── */
+.sci-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:20px;}
+.sci-formula-big{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--white);text-align:center;margin:20px 0;letter-spacing:1px;}
+.sci-formula-big span.blue{color:var(--blue);}
+.sci-formula-big span.yellow{color:var(--yellow);}
+.sci-rules-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;}
+.sci-rule-item{background:var(--bg);border-radius:10px;padding:16px;text-align:center;}
+.sri-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;}
+.sri-val{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);}
+.sri-ex{font-size:12px;color:var(--teal);margin-top:4px;}
+
+/* ── OPERATIONS TABLE ── */
+.ops-table{width:100%;border-collapse:collapse;margin-top:16px;}
+.ops-table th{background:var(--bg);padding:12px 16px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);}
+.ops-table td{padding:14px 16px;font-size:14px;border-bottom:1px solid var(--border);vertical-align:top;}
+.ops-table tr:last-child td{border-bottom:none;}
+.ops-table tr:hover td{background:var(--bg);}
+.math-cell{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--blue);}
+.ex-cell{color:var(--teal);font-size:13px;}
+.step-cell{color:var(--muted);font-size:13px;line-height:1.5;}
+
+/* ── QUIZ ── */
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.quiz-progress-bar{flex:1;height:6px;background:var(--border);border-radius:3px;margin:0 20px;}
+.quiz-progress-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .4s ease;}
+.quiz-score-badge{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--muted);}
+.quiz-score-badge span{color:var(--green);}
+
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;max-width:720px;margin:0 auto;}
+.q-category{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:16px;}
+.q-num{font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:600;}
+.q-text{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:8px;}
+.q-hint{font-size:13px;color:var(--muted);margin-bottom:28px;font-style:italic;}
+.q-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.q-opt{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:16px 20px;font-family:'Syne',sans-serif;font-size:16px;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;text-align:center;}
+.q-opt:hover:not(.selected):not(.disabled){border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.08);}
+.q-opt.correct{border-color:var(--green);background:rgba(34,197,94,.1);color:var(--green);}
+.q-opt.wrong{border-color:var(--red);background:rgba(239,68,68,.1);color:var(--red);}
+.q-opt.disabled{cursor:default;}
+.q-opt.reveal-correct{border-color:var(--green);background:rgba(34,197,94,.08);color:var(--green);}
+
+.q-feedback{border-radius:12px;padding:16px 20px;margin-bottom:20px;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.correct-fb{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);}
+.q-feedback.wrong-fb{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);}
+.fb-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;}
+.fb-title.c{color:var(--green);}
+.fb-title.w{color:var(--red);}
+.fb-explain{font-size:13px;color:var(--muted);line-height:1.6;}
+.fb-explain strong{color:var(--teal);}
+
+.q-btn-row{display:flex;gap:12px;}
+.q-btn{padding:12px 28px;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+.q-btn-primary{background:var(--blue);color:#fff;}
+.q-btn-primary:hover{background:var(--blue-d);}
+.q-btn-secondary{background:var(--card);border:1px solid var(--border);color:var(--muted);}
+.q-btn-secondary:hover{color:var(--white);border-color:var(--muted);}
+
+/* ── RESULTS ── */
+.results-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px;text-align:center;max-width:600px;margin:0 auto;}
+.result-score{font-family:'Syne',sans-serif;font-size:80px;font-weight:800;line-height:1;}
+.result-label{font-size:16px;color:var(--muted);margin-top:8px;margin-bottom:32px;}
+.result-breakdown{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px;}
+.rb-item{background:var(--bg);border-radius:12px;padding:16px;}
+.rb-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;}
+.rb-label{font-size:12px;color:var(--muted);margin-top:4px;}
+.result-msg{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
+.restart-btn{background:var(--blue);color:#fff;border:none;padding:14px 36px;border-radius:12px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;}
+.restart-btn:hover{background:var(--blue-d);}
+
+/* ── FLASHCARDS ── */
+.fc-controls{display:flex;align-items:center;gap:12px;margin-bottom:24px;justify-content:center;}
+.fc-btn{padding:10px 24px;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all .2s;}
+.fc-btn:hover{color:var(--white);border-color:var(--muted);}
+.fc-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.fc-counter{font-size:14px;color:var(--muted);font-weight:600;}
+.flashcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:0;max-width:640px;margin:0 auto 24px;cursor:pointer;perspective:1000px;}
+.fc-inner{position:relative;width:100%;height:220px;transition:transform .5s;transform-style:preserve-3d;}
+.flashcard.flipped .fc-inner{transform:rotateY(180deg);}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;backface-visibility:hidden;}
+.fc-front{background:var(--card);}
+.fc-back{background:linear-gradient(135deg,#0d1b3e,#1a2d5a);transform:rotateY(180deg);}
+.fc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:12px;}
+.fc-content{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--white);text-align:center;line-height:1.4;}
+.fc-back .fc-content{color:var(--teal);}
+.fc-tap{font-size:12px;color:var(--muted);margin-top:12px;}
+.fc-progress-dots{display:flex;gap:6px;justify-content:center;margin-top:16px;}
+.fc-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background .2s;}
+.fc-dot.active{background:var(--blue);}
+.fc-dot.seen{background:var(--purple);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo">Unit 9 <span>Study</span></div>
+    <div class="nav-pills">
+      <button class="npill active" onclick="showPage('overview',this)">Overview</button>
+      <button class="npill" onclick="showPage('rules',this)">Rules</button>
+      <button class="npill" onclick="showPage('scinotation',this)">Sci Notation</button>
+      <button class="npill" onclick="showPage('flashcards',this)">Flashcards</button>
+      <button class="npill" onclick="showPage('quiz',this)">Quiz</button>
+    </div>
+    <div class="test-badge">📅 Test: Friday Apr 10</div>
+  </div>
+</header>
+
+<!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
+<div class="page active" id="page-overview">
+  <div class="hero">
+    <div class="hero-label">Ms. Lai · Unit 9 Assessment · 8th Grade Math</div>
+    <div class="hero-title">Exponents &<br><span>Scientific Notation</span></div>
+    <div class="hero-sub">Everything you need to ace Friday's test. Study the rules, practice with flashcards, then take the quiz to see where you stand.</div>
+    <div class="hero-chips">
+      <span class="chip chip-blue">Product Rule</span>
+      <span class="chip chip-blue">Quotient Rule</span>
+      <span class="chip chip-blue">Power Rule</span>
+      <span class="chip chip-green">Negative Exponents</span>
+      <span class="chip chip-yellow">Scientific Notation</span>
+      <span class="chip chip-purple">a⁰ = 1</span>
+      <span class="chip chip-teal">Word Problems</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;" onclick="showPage('rules',document.querySelectorAll('.npill')[1])">
+      <div style="font-size:36px;margin-bottom:10px;">📐</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;">Exponent Rules</div>
+      <div style="font-size:13px;color:var(--muted);">Product, Quotient, Power + special cases</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;" onclick="showPage('scinotation',document.querySelectorAll('.npill')[2])">
+      <div style="font-size:36px;margin-bottom:10px;">🔬</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;">Scientific Notation</div>
+      <div style="font-size:13px;color:var(--muted);">Write, read, and compute with sci notation</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;" onclick="showPage('flashcards',document.querySelectorAll('.npill')[3])">
+      <div style="font-size:36px;margin-bottom:10px;">🃏</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;">Flashcards</div>
+      <div style="font-size:13px;color:var(--muted);">Flip through key concepts and examples</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;" onclick="showPage('quiz',document.querySelectorAll('.npill')[4])">
+      <div style="font-size:36px;margin-bottom:10px;">✏️</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;">Practice Quiz</div>
+      <div style="font-size:13px;color:var(--muted);">20 questions — just like the real test</div>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid #2d5a2d;border-radius:16px;padding:24px 28px;">
+    <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:12px;">📋 What is on Friday's Test</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);"><span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>Simplify expressions using exponent rules (Product, Quotient, Power)</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);"><span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>Simplify expressions with negative exponents</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);"><span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>Write numbers in scientific notation and standard form</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);"><span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>Understand a⁰ = 1 and a⁻ᵇ = 1/aᵇ</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);"><span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>Write large and small numbers in scientific notation</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);"><span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>Compute with scientific notation — add, subtract, multiply, divide</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);"><span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>Apply concepts in real world word problems</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ RULES ═══════════════════════ -->
+<div class="page" id="page-rules">
+  <div class="sec-label">Exponent Rules</div>
+  <div class="sec-title">The 3 Main Rules</div>
+  <div class="sec-sub">Master these three first. Everything else builds on them.</div>
+
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-card-top">
+        <div class="rule-icon" style="background:rgba(59,130,246,.15);">✖️</div>
+        <span class="chip chip-blue" style="font-size:11px;">Multiplying</span>
+      </div>
+      <div class="rule-name">Product Rule</div>
+      <div class="rule-formula">aᵐ × aⁿ = aᵐ⁺ⁿ</div>
+      <div class="rule-example">When multiplying <strong>same base</strong>, ADD the exponents.<br><br>
+        <strong>x³ × x⁵ = x⁸</strong><br>
+        <span style="font-size:12px;">3 + 5 = 8</span><br><br>
+        <strong>2⁴ × 2³ = 2⁷ = 128</strong>
+      </div>
+      <div class="rule-tip">⚡ Key: Bases must be the SAME. You cannot use this rule on x² × y³.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-card-top">
+        <div class="rule-icon" style="background:rgba(34,197,94,.15);">➗</div>
+        <span class="chip chip-green" style="font-size:11px;">Dividing</span>
+      </div>
+      <div class="rule-name">Quotient Rule</div>
+      <div class="rule-formula">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div>
+      <div class="rule-example">When dividing <strong>same base</strong>, SUBTRACT the exponents.<br><br>
+        <strong>x⁷ ÷ x² = x⁵</strong><br>
+        <span style="font-size:12px;">7 - 2 = 5</span><br><br>
+        <strong>5⁶ ÷ 5² = 5⁴ = 625</strong>
+      </div>
+      <div class="rule-tip">⚡ Always top exponent MINUS bottom exponent.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-card-top">
+        <div class="rule-icon" style="background:rgba(167,139,250,.15);">🔢</div>
+        <span class="chip chip-purple" style="font-size:11px;">Power of Power</span>
+      </div>
+      <div class="rule-name">Power Rule</div>
+      <div class="rule-formula">(aᵐ)ⁿ = aᵐˣⁿ</div>
+      <div class="rule-example">When raising a power <strong>to another power</strong>, MULTIPLY.<br><br>
+        <strong>(x³)⁴ = x¹²</strong><br>
+        <span style="font-size:12px;">3 × 4 = 12</span><br><br>
+        <strong>(2²)³ = 2⁶ = 64</strong>
+      </div>
+      <div class="rule-tip">⚡ Power OUTSIDE applies to EVERYTHING inside the parentheses.</div>
+    </div>
+  </div>
+
+  <div class="sec-label">Special Rules</div>
+  <div class="sec-title">Zero & Negative Exponents</div>
+  <div class="sec-sub">These come up constantly — memorize both before Friday.</div>
+
+  <div class="special-grid">
+    <div class="special-card">
+      <div class="special-math" style="color:var(--yellow);">a⁰ = 1</div>
+      <div class="special-info">
+        <div class="special-title">Zero Exponent Rule</div>
+        <div class="special-desc">Any non-zero number raised to the power of 0 equals 1. Always. No exceptions (except 0⁰ which is undefined).</div>
+        <div class="special-ex">5⁰ = 1 &nbsp;·&nbsp; x⁰ = 1 &nbsp;·&nbsp; (2y)⁰ = 1 &nbsp;·&nbsp; 1000⁰ = 1</div>
+      </div>
+    </div>
+    <div class="special-card">
+      <div class="special-math" style="color:var(--purple);">a⁻ᵇ = 1/aᵇ</div>
+      <div class="special-info">
+        <div class="special-title">Negative Exponent Rule</div>
+        <div class="special-desc">A negative exponent means take the reciprocal (flip it). The exponent itself becomes positive once flipped.</div>
+        <div class="special-ex">x⁻³ = 1/x³ &nbsp;·&nbsp; 2⁻⁴ = 1/16 &nbsp;·&nbsp; 5⁻² = 1/25</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;">
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:20px;">🧠 Quick Reference Table</div>
+    <table class="ops-table">
+      <thead><tr><th>Rule</th><th>Formula</th><th>Example</th><th>Step-by-Step</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--blue);font-weight:700;">Product</td><td class="math-cell">aᵐ × aⁿ = aᵐ⁺ⁿ</td><td class="ex-cell">x⁴ × x⁶ = x¹⁰</td><td class="step-cell">Same base → add exponents: 4+6=10</td></tr>
+        <tr><td style="color:var(--green);font-weight:700;">Quotient</td><td class="math-cell">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</td><td class="ex-cell">y⁸ ÷ y³ = y⁵</td><td class="step-cell">Same base → subtract exponents: 8-3=5</td></tr>
+        <tr><td style="color:var(--purple);font-weight:700;">Power</td><td class="math-cell">(aᵐ)ⁿ = aᵐˣⁿ</td><td class="ex-cell">(z²)⁵ = z¹⁰</td><td class="step-cell">Power on power → multiply: 2×5=10</td></tr>
+        <tr><td style="color:var(--yellow);font-weight:700;">Zero</td><td class="math-cell">a⁰ = 1</td><td class="ex-cell">99⁰ = 1</td><td class="step-cell">Anything to the 0 = 1 (always)</td></tr>
+        <tr><td style="color:var(--teal);font-weight:700;">Negative</td><td class="math-cell">a⁻ⁿ = 1/aⁿ</td><td class="ex-cell">3⁻² = 1/9</td><td class="step-cell">Flip to denominator, make positive</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SCIENTIFIC NOTATION ═══════════════════════ -->
+<div class="page" id="page-scinotation">
+  <div class="sec-label">Scientific Notation</div>
+  <div class="sec-title">Writing & Computing</div>
+  <div class="sec-sub">Used to write very large or very small numbers in a clean, standard form.</div>
+
+  <div class="sci-box">
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);text-align:center;">Standard Form</div>
+    <div class="sci-formula-big"><span class="blue">a</span> × 10<sup style="font-size:22px;"><span class="yellow">n</span></sup></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;">
+      <div style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:16px;text-align:center;">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:6px;">The "a" part</div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);">Must be: 1 ≤ a &lt; 10</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">A number with ONE digit before the decimal point</div>
+      </div>
+      <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:16px;text-align:center;">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--yellow);margin-bottom:6px;">The "n" part (exponent)</div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);">Positive = BIG number</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">Negative = SMALL (decimal) number</div>
+      </div>
+    </div>
+    <div class="sci-rules-row">
+      <div class="sci-rule-item">
+        <div class="sri-title">Large Number</div>
+        <div class="sri-val">5,300,000</div>
+        <div class="sri-ex">= 5.3 × 10⁶</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Move decimal LEFT 6 places</div>
+      </div>
+      <div class="sci-rule-item">
+        <div class="sri-title">Small Number</div>
+        <div class="sri-val">0.000047</div>
+        <div class="sri-ex">= 4.7 × 10⁻⁵</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Move decimal RIGHT 5 places</div>
+      </div>
+      <div class="sci-rule-item">
+        <div class="sri-title">Back to Standard</div>
+        <div class="sri-val">3.2 × 10⁴</div>
+        <div class="sri-ex">= 32,000</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Move decimal RIGHT 4 places</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;">
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:6px;">🔢 Computing with Scientific Notation</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Four operations — here is exactly what to do for each one.</div>
+    <table class="ops-table">
+      <thead><tr><th>Operation</th><th>Method</th><th>Example</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--blue);font-weight:700;">Multiply</td>
+          <td class="step-cell">Multiply the "a" parts.<br>ADD the exponents.</td>
+          <td class="ex-cell">(3 × 10²) × (2 × 10⁴)</td>
+          <td class="math-cell">6 × 10⁶</td>
+        </tr>
+        <tr>
+          <td style="color:var(--red);font-weight:700;">Divide</td>
+          <td class="step-cell">Divide the "a" parts.<br>SUBTRACT the exponents.</td>
+          <td class="ex-cell">(8 × 10⁵) ÷ (4 × 10²)</td>
+          <td class="math-cell">2 × 10³</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green);font-weight:700;">Add</td>
+          <td class="step-cell">Make exponents EQUAL first.<br>Then add the "a" parts.</td>
+          <td class="ex-cell">(3 × 10⁴) + (2 × 10³)</td>
+          <td class="math-cell">3.2 × 10⁴</td>
+        </tr>
+        <tr>
+          <td style="color:var(--yellow);font-weight:700;">Subtract</td>
+          <td class="step-cell">Make exponents EQUAL first.<br>Then subtract the "a" parts.</td>
+          <td class="ex-cell">(5 × 10⁶) - (3 × 10⁵)</td>
+          <td class="math-cell">4.7 × 10⁶</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#1a2d1a,#0d2010);border:1px solid #2d5a2d;border-radius:16px;padding:28px;">
+    <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:16px;">💡 Decimal Direction Trick — Never Forget</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:8px;">Standard → Scientific Notation</div>
+        <div style="font-size:13px;color:#86efac;line-height:1.7;">
+          Big number (≥10): move decimal LEFT → exponent is <strong>positive</strong><br>
+          Small number (&lt;1): move decimal RIGHT → exponent is <strong>negative</strong>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:8px;">Scientific → Standard Notation</div>
+        <div style="font-size:13px;color:#86efac;line-height:1.7;">
+          Positive exponent: move decimal RIGHT (bigger)<br>
+          Negative exponent: move decimal LEFT (smaller)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FLASHCARDS ═══════════════════════ -->
+<div class="page" id="page-flashcards">
+  <div class="sec-label">Study Tool</div>
+  <div class="sec-title">Flashcards</div>
+  <div class="sec-sub">Click any card to flip it. Go through all 16 before the quiz.</div>
+
+  <div class="fc-controls">
+    <button class="fc-btn" onclick="fcPrev()">← Prev</button>
+    <div class="fc-counter" id="fc-counter">Card 1 of 16</div>
+    <button class="fc-btn primary" onclick="fcNext()">Next →</button>
+    <button class="fc-btn" onclick="shuffleCards()" style="margin-left:8px;">🔀 Shuffle</button>
+  </div>
+
+  <div class="flashcard" id="flashcard" onclick="flipCard()">
+    <div class="fc-inner">
+      <div class="fc-front">
+        <div class="fc-label">Question</div>
+        <div class="fc-content" id="fc-front-text"></div>
+        <div class="fc-tap">Click to reveal answer</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-label">Answer</div>
+        <div class="fc-content" id="fc-back-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-progress-dots" id="fc-dots"></div>
+</div>
+
+<!-- ═══════════════════════ QUIZ ═══════════════════════ -->
+<div class="page" id="page-quiz">
+  <div id="quiz-area">
+    <div class="quiz-header">
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);">Practice Quiz</div>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qprogress" style="width:0%"></div></div>
+      <div class="quiz-score-badge">Score: <span id="qscore">0</span> / <span id="qtotal">20</span></div>
+    </div>
+    <div class="question-card" id="question-card">
+      <!-- question rendered by JS -->
+    </div>
+  </div>
+
+  <div id="results-area" style="display:none;">
+    <div class="results-card">
+      <div class="result-score" id="r-score" style="color:var(--blue);">0</div>
+      <div class="result-label" id="r-label">out of 20</div>
+      <div class="result-breakdown">
+        <div class="rb-item"><div class="rb-num" style="color:var(--green);" id="r-correct">0</div><div class="rb-label">Correct</div></div>
+        <div class="rb-item"><div class="rb-num" style="color:var(--red);" id="r-wrong">0</div><div class="rb-label">Wrong</div></div>
+        <div class="rb-item"><div class="rb-num" style="color:var(--yellow);" id="r-pct">0%</div><div class="rb-label">Score</div></div>
+      </div>
+      <div class="result-msg" id="r-msg"></div>
+      <button class="restart-btn" onclick="startQuiz()">Try Again 🔄</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── NAVIGATION ───
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.npill').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ─── FLASHCARD DATA ───
+let cards = [
+  {q:'Product Rule: What do you do with exponents when MULTIPLYING same base?', a:'ADD the exponents\naᵐ × aⁿ = aᵐ⁺ⁿ\nExample: x³ × x⁴ = x⁷'},
+  {q:'Quotient Rule: What do you do with exponents when DIVIDING same base?', a:'SUBTRACT the exponents\naᵐ ÷ aⁿ = aᵐ⁻ⁿ\nExample: x⁸ ÷ x³ = x⁵'},
+  {q:'Power Rule: What do you do with (aᵐ)ⁿ ?', a:'MULTIPLY the exponents\n(aᵐ)ⁿ = aᵐˣⁿ\nExample: (x²)⁵ = x¹⁰'},
+  {q:'Zero Exponent Rule: What does a⁰ equal?', a:'Always equals 1\na⁰ = 1\nExample: 7⁰ = 1, x⁰ = 1'},
+  {q:'Negative Exponent Rule: What does a⁻ⁿ equal?', a:'Reciprocal: a⁻ⁿ = 1/aⁿ\nExample: 2⁻³ = 1/8\nExample: x⁻⁴ = 1/x⁴'},
+  {q:'Simplify: x⁵ × x³', a:'x⁸\nProduct Rule: add 5 + 3 = 8'},
+  {q:'Simplify: y⁹ ÷ y⁴', a:'y⁵\nQuotient Rule: subtract 9 - 4 = 5'},
+  {q:'Simplify: (z³)⁴', a:'z¹²\nPower Rule: multiply 3 × 4 = 12'},
+  {q:'Simplify: 8⁰', a:'1\nZero Exponent Rule — anything to the 0 = 1'},
+  {q:'Simplify: 3⁻²', a:'1/9\nNegative exponent: 3⁻² = 1/3² = 1/9'},
+  {q:'What is scientific notation form?', a:'a × 10ⁿ\nWhere 1 ≤ a < 10\nn is a positive or negative integer'},
+  {q:'Write 45,000 in scientific notation', a:'4.5 × 10⁴\nMove decimal LEFT 4 places\nExponent is positive (large number)'},
+  {q:'Write 0.00062 in scientific notation', a:'6.2 × 10⁻⁴\nMove decimal RIGHT 4 places\nExponent is negative (small number)'},
+  {q:'Write 3.7 × 10⁵ in standard form', a:'370,000\nMove decimal RIGHT 5 places'},
+  {q:'Multiply: (2 × 10³) × (4 × 10²)', a:'8 × 10⁵\nMultiply 2×4=8, add 3+2=5'},
+  {q:'Divide: (9 × 10⁶) ÷ (3 × 10²)', a:'3 × 10⁴\nDivide 9÷3=3, subtract 6-2=4'}
+];
+
+let fcIndex = 0;
+let fcSeen = new Set();
+
+function renderFlashcard() {
+  const card = cards[fcIndex];
+  document.getElementById('fc-front-text').textContent = card.q;
+  document.getElementById('fc-back-text').textContent = card.a;
+  document.getElementById('fc-counter').textContent = 'Card ' + (fcIndex+1) + ' of ' + cards.length;
+  document.getElementById('flashcard').classList.remove('flipped');
+  fcSeen.add(fcIndex);
+  renderFCDots();
+}
+
+function renderFCDots() {
+  const dots = document.getElementById('fc-dots');
+  dots.innerHTML = cards.map((_, i) => `<div class="fc-dot ${i === fcIndex ? 'active' : fcSeen.has(i) ? 'seen' : ''}"></div>`).join('');
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function fcNext() {
+  fcIndex = (fcIndex + 1) % cards.length;
+  renderFlashcard();
+}
+
+function fcPrev() {
+  fcIndex = (fcIndex - 1 + cards.length) % cards.length;
+  renderFlashcard();
+}
+
+function shuffleCards() {
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  fcIndex = 0;
+  fcSeen.clear();
+  renderFlashcard();
+}
+
+renderFlashcard();
+
+// ─── QUIZ DATA ───
+const allQuestions = [
+  {cat:'Product Rule', q:'Simplify: x⁴ × x⁵', hint:'Same base — what do you do with the exponents?', opts:['x²⁰','x⁹','x¹','x⁴⁵'], ans:1, explain:'Product Rule: same base, ADD exponents. 4 + 5 = 9, so x⁴ × x⁵ = x⁹'},
+  {cat:'Product Rule', q:'Simplify: 2³ × 2⁴', hint:'Multiply same base numbers', opts:['2¹²','2⁷','4⁷','2¹'], ans:1, explain:'Product Rule: 2³ × 2⁴ = 2^(3+4) = 2⁷ = 128'},
+  {cat:'Quotient Rule', q:'Simplify: x¹⁰ ÷ x³', hint:'Dividing same base — what operation?', opts:['x⁷','x¹³','x³⁰','x⁴'], ans:0, explain:'Quotient Rule: same base, SUBTRACT exponents. 10 - 3 = 7, so x¹⁰ ÷ x³ = x⁷'},
+  {cat:'Quotient Rule', q:'Simplify: 5⁸ ÷ 5⁵', hint:'Top exponent minus bottom exponent', opts:['5³','5¹³','25³','5⁴⁰'], ans:0, explain:'Quotient Rule: 5⁸ ÷ 5⁵ = 5^(8-5) = 5³ = 125'},
+  {cat:'Power Rule', q:'Simplify: (x³)⁴', hint:'Power raised to a power — multiply or add?', opts:['x⁷','x¹','x¹²','x³⁴'], ans:2, explain:'Power Rule: (x³)⁴ = x^(3×4) = x¹²'},
+  {cat:'Power Rule', q:'Simplify: (2²)³', hint:'Use the Power Rule then evaluate', opts:['2⁵','2⁶','64','Both B and C'], ans:3, explain:'(2²)³ = 2^(2×3) = 2⁶ = 64. Both 2⁶ and 64 are correct!'},
+  {cat:'Zero Exponent', q:'What is 15⁰?', hint:'Remember the Zero Exponent Rule', opts:['0','15','1','Undefined'], ans:2, explain:'Zero Exponent Rule: any non-zero number to the 0 power = 1. So 15⁰ = 1'},
+  {cat:'Zero Exponent', q:'What is (3x²y)⁰?', hint:'The whole expression is raised to the 0', opts:['3','1','0','3x²y'], ans:1, explain:'Anything (except 0) raised to the power 0 equals 1. The whole expression = 1'},
+  {cat:'Negative Exponent', q:'Simplify: 4⁻²', hint:'Negative exponent means take the reciprocal', opts:['−16','1/16','−8','1/8'], ans:1, explain:'4⁻² = 1/4² = 1/16. Negative exponent flips to denominator.'},
+  {cat:'Negative Exponent', q:'Simplify: x⁻⁵', hint:'Move it to the denominator', opts:['−x⁵','x⁵','1/x⁵','5/x'], ans:2, explain:'x⁻⁵ = 1/x⁵. Negative exponent: flip to denominator, exponent becomes positive.'},
+  {cat:'Scientific Notation', q:'Write 6,200,000 in scientific notation', hint:'Move the decimal to get a number between 1 and 10', opts:['62 × 10⁵','6.2 × 10⁶','0.62 × 10⁷','6.2 × 10⁷'], ans:1, explain:'6,200,000: move decimal LEFT 6 places to get 6.2. Answer: 6.2 × 10⁶'},
+  {cat:'Scientific Notation', q:'Write 0.00083 in scientific notation', hint:'Small number — which direction does the decimal move?', opts:['8.3 × 10⁻⁴','8.3 × 10⁴','83 × 10⁻⁵','0.83 × 10⁻³'], ans:0, explain:'0.00083: move decimal RIGHT 4 places to get 8.3. Small number = negative exponent. Answer: 8.3 × 10⁻⁴'},
+  {cat:'Scientific Notation', q:'Write 4.5 × 10³ in standard form', hint:'Positive exponent — which way does the decimal move?', opts:['0.0045','45,000','4,500','450,000'], ans:2, explain:'4.5 × 10³: move decimal RIGHT 3 places. 4.5 → 4500. Answer: 4,500'},
+  {cat:'Scientific Notation', q:'Write 2.1 × 10⁻³ in standard form', hint:'Negative exponent means a small decimal number', opts:['2100','0.0021','21,000','0.00021'], ans:1, explain:'2.1 × 10⁻³: move decimal LEFT 3 places. 2.1 → 0.0021. Answer: 0.0021'},
+  {cat:'Computing Sci Notation', q:'Multiply: (3 × 10²) × (2 × 10⁴)', hint:'Multiply the fronts, add the exponents', opts:['6 × 10⁶','5 × 10⁶','6 × 10⁸','6 × 10²'], ans:0, explain:'Multiply fronts: 3×2=6. Add exponents: 2+4=6. Answer: 6 × 10⁶'},
+  {cat:'Computing Sci Notation', q:'Divide: (8 × 10⁵) ÷ (4 × 10²)', hint:'Divide the fronts, subtract the exponents', opts:['2 × 10³','4 × 10³','2 × 10⁷','32 × 10³'], ans:0, explain:'Divide fronts: 8÷4=2. Subtract exponents: 5-2=3. Answer: 2 × 10³'},
+  {cat:'Word Problem', q:'A bacteria cell is 3 × 10⁻⁶ meters wide. How do you write this in standard form?', hint:'Negative exponent = very small number', opts:['3,000,000 m','0.000003 m','0.0000003 m','300,000 m'], ans:1, explain:'3 × 10⁻⁶: move decimal LEFT 6 places. Answer: 0.000003 meters (3 millionths of a meter)'},
+  {cat:'Word Problem', q:'Earth is about 1.5 × 10⁸ km from the Sun. Mars is 2.3 × 10⁸ km away. How much farther is Mars?', hint:'Subtract — same exponent, subtract the fronts', opts:['3.8 × 10⁸ km','0.8 × 10⁸ km','8 × 10⁷ km','Both B and C are equivalent'], ans:3, explain:'2.3 × 10⁸ - 1.5 × 10⁸ = 0.8 × 10⁸ = 8 × 10⁷ km. Both B and C are the same value!'},
+  {cat:'Mixed Review', q:'Which expression is NOT equal to 1?', hint:'Think about the zero exponent rule', opts:['5⁰','(100x)⁰','0⁰','(−3)⁰'], ans:2, explain:'0⁰ is undefined — it is the one exception to the zero exponent rule. Everything else equals 1.'},
+  {cat:'Mixed Review', q:'Simplify: (x⁴ × x²) ÷ x³', hint:'Apply product rule first, then quotient rule', opts:['x³','x⁹','x²','x⁵'], ans:0, explain:'Step 1 — Product Rule: x⁴ × x² = x⁶. Step 2 — Quotient Rule: x⁶ ÷ x³ = x³. Answer: x³'}
+];
+
+let qIndex = 0;
+let score = 0;
+let answered = false;
+let questions = [];
+
+function startQuiz() {
+  questions = [...allQuestions].sort(() => Math.random() - .5);
+  qIndex = 0;
+  score = 0;
+  answered = false;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-area').style.display = 'none';
+  document.getElementById('qscore').textContent = '0';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[qIndex];
+  const pct = (qIndex / questions.length * 100).toFixed(0);
+  document.getElementById('qprogress').style.width = pct + '%';
+  answered = false;
+
+  document.getElementById('question-card').innerHTML = `
+    <div class="q-category">${q.cat}</div>
+    <div class="q-num">Question ${qIndex + 1} of ${questions.length}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-hint">Hint: ${q.hint}</div>
+    <div class="q-options" id="q-opts">
+      ${q.opts.map((o, i) => `<div class="q-opt" onclick="selectAnswer(${i})">${o}</div>`).join('')}
+    </div>
+    <div class="q-feedback" id="q-feedback"></div>
+    <div class="q-btn-row">
+      <button class="q-btn q-btn-primary" id="q-next-btn" onclick="nextQuestion()" style="display:none;">
+        ${qIndex === questions.length - 1 ? 'See Results' : 'Next Question →'}
+      </button>
+    </div>
+  `;
+}
+
+function selectAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const opts = document.querySelectorAll('.q-opt');
+  const fb = document.getElementById('q-feedback');
+
+  opts.forEach(o => o.classList.add('disabled'));
+
+  if (chosen === q.ans) {
+    score++;
+    opts[chosen].classList.add('correct');
+    fb.className = 'q-feedback show correct-fb';
+    fb.innerHTML = `<div class="fb-title c">Correct!</div><div class="fb-explain"><strong>${q.explain}</strong></div>`;
+    document.getElementById('qscore').textContent = score;
+  } else {
+    opts[chosen].classList.add('wrong');
+    opts[q.ans].classList.add('reveal-correct');
+    fb.className = 'q-feedback show wrong-fb';
+    fb.innerHTML = `<div class="fb-title w">Not quite.</div><div class="fb-explain">${q.explain}</div>`;
+  }
+
+  document.getElementById('q-next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+  qIndex++;
+  if (qIndex >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results-area').style.display = 'block';
+  const pct = Math.round(score / questions.length * 100);
+  let color = pct >= 85 ? 'var(--green)' : pct >= 70 ? 'var(--yellow)' : 'var(--red)';
+  let msg = pct >= 90 ? 'Outstanding! You are ready for Friday. Keep reviewing once more to lock it in.' :
+            pct >= 80 ? 'Really solid. Review the questions you missed and you\'ll be in great shape.' :
+            pct >= 70 ? 'Good effort. Focus on the sections where you made mistakes before the test.' :
+                        'Keep studying. Go back through the Rules and Scientific Notation sections, then try again.';
+  document.getElementById('r-score').textContent = pct + '%';
+  document.getElementById('r-score').style.color = color;
+  document.getElementById('r-label').textContent = score + ' correct out of ' + questions.length;
+  document.getElementById('r-correct').textContent = score;
+  document.getElementById('r-wrong').textContent = questions.length - score;
+  document.getElementById('r-pct').textContent = pct + '%';
+  document.getElementById('r-msg').textContent = msg;
+  document.getElementById('qtotal').textContent = questions.length;
+  document.getElementById('qprogress').style.width = '100%';
+}
+
+startQuiz();
+</script>
+</body>
+</html>
